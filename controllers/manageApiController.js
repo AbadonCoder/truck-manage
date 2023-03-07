@@ -24,7 +24,9 @@ const verifyPlate = async (req, res) => {
     let { key, plate } = req.params;
     // Clean data
     key = key.trim();
-    plate = plate.trim();
+    plate = plate.trim().toUpperCase();
+
+    console.log(plate);
     
     const user = await User.findOne({key});
 
