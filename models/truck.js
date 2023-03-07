@@ -15,7 +15,7 @@ const TruckSchema = new Schema({
     },
     plate: {
         type: String,
-        max: 9,
+        max: 7,
         required: true,
         unique: true
     },
