@@ -194,8 +194,9 @@ const trucks = async (req, res) => {
 // Save a new truck
 const addTruck = async (req, res) => {
     const {_token} = req.cookies;
-    const {plate} = req.body;
-    const session = jwt.verify(_token, process.env.JWT_SECRET)
+    let {plate} = req.body;
+    const session = jwt.verify(_token, process.env.JWT_SECRET);
+    plate = plate.toUpperCase();
 
     let errors = await validateRegister(req);
 
@@ -224,7 +225,7 @@ const addTruck = async (req, res) => {
 
         // Relate with the current user
         truck.user_id = session.id;
-
+        truck.plate = plate;
         await truck.save();
         res.redirect('/manage/manage-trucks');
     } catch (error) {
@@ -272,6 +273,7 @@ const updateTruck = async (req, res) => {
             return res.status(400).json({errors: errors.array()});
         }
 
+        req.body.plate = req.body.plate.toUpperCase();
         await Truck.findByIdAndUpdate(id, req.body);
         res.status(200).json({msg: 'Your truck has been upgraded.'});
 
